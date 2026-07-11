@@ -224,17 +224,6 @@ class GameEngine {
   // ================================================================
   // SCENE TRANSITION
   // ================================================================
-  loadNode(nodeId) {
-  // --- FORÇAR ALTURA RESPONSIVA EM MÍDIAS MOBILE ---
-  const container = document.getElementById("game-container");
-  if (window.innerWidth <= 768) {
-    container.style.height = (container.offsetWidth * 0.5625) + "px";
-  }
-  // ─────────────────────────────────────────────────
-
-  if (nodeId === "main_menu_reset") {
-    window.gameAudio.stopBackground();
-    // ... restante do seu código original
   transitionToNode(nodeId, instant = false) {
     if (instant) {
       this.loadNode(nodeId);
@@ -250,6 +239,30 @@ class GameEngine {
       setTimeout(() => { t.className = ""; }, 450);
     }, 400);
   }
+
+  // ================================================================
+  // CORE NODE LOADER
+  // ================================================================
+  loadNode(nodeId) {
+    // --- FORÇAR ALTURA RESPONSIVA EM MÍDIAS MOBILE ---
+    const container = document.getElementById("game-container");
+    if (container && window.innerWidth <= 768) {
+      container.style.height = (container.offsetWidth * 0.5625) + "px";
+    }
+    // ─────────────────────────────────────────────────
+
+    if (nodeId === "main_menu_reset") {
+      // Stop ALL audio systems to prevent leakage back to menu
+      window.gameAudio.stopBackground();
+      window.gameAudio.stopHeartbeat();
+      window.gameAudio.stopTapeNoise();
+      window.gameAudio.updateSanityFilter(100);
+      this.stopWhispers();
+      this.showScreen("menu-screen");
+      return;
+    }
+
+    const node = STORY[nodeId];
 
   // ================================================================
   // CORE NODE LOADER
