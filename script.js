@@ -244,13 +244,6 @@ class GameEngine {
   // CORE NODE LOADER
   // ================================================================
   loadNode(nodeId) {
-    // --- FORÇAR ALTURA RESPONSIVA EM MÍDIAS MOBILE ---
-    const container = document.getElementById("game-container");
-    if (container && window.innerWidth <= 768) {
-      container.style.height = (container.offsetWidth * 0.5625) + "px";
-    }
-    // ─────────────────────────────────────────────────
-
     if (nodeId === "main_menu_reset") {
       // Stop ALL audio systems to prevent leakage back to menu
       window.gameAudio.stopBackground();
@@ -322,7 +315,6 @@ class GameEngine {
           break;
         case "shake-heavy":
           this.container.classList.add("shake-heavy");
-          this.staticOverlay.classList.add("show-static");
           break;
         case "flash-red":
           this.flashOverlay.classList.add("flash-red");
@@ -520,6 +512,9 @@ class GameEngine {
       btn.className = "choice-btn";
 
       // ── EASTER EGG DE INSANIDADE ──────────────────────────────────
+      // Abaixo de 30% de sanidade, cada botão tem 30% de chance de
+      // exibir um pensamento intrusivo. O alvo da navegação permanece
+      // correto — é só a aparência do texto que corrompe.
       const isCorrupted = sanityVal < 30 && Math.random() < 0.3;
       if (isCorrupted) {
         const thought = intrusiveThoughts[Math.floor(Math.random() * intrusiveThoughts.length)];
