@@ -224,6 +224,17 @@ class GameEngine {
   // ================================================================
   // SCENE TRANSITION
   // ================================================================
+  loadNode(nodeId) {
+  // --- FORÇAR ALTURA RESPONSIVA EM MÍDIAS MOBILE ---
+  const container = document.getElementById("game-container");
+  if (window.innerWidth <= 768) {
+    container.style.height = (container.offsetWidth * 0.5625) + "px";
+  }
+  // ─────────────────────────────────────────────────
+
+  if (nodeId === "main_menu_reset") {
+    window.gameAudio.stopBackground();
+    // ... restante do seu código original
   transitionToNode(nodeId, instant = false) {
     if (instant) {
       this.loadNode(nodeId);
